@@ -27,7 +27,6 @@ Office
     *Office_id (autoincrement primary key)
     *Office name
     *City
-    *legislative_entity_id
 pay_rates:
     *pay_rate_id(autoincrement primary key)
     *biweekly/hourly_rate
