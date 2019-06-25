@@ -6,7 +6,7 @@ payroll_type_table_drop = "DROP TABLE IF EXISTS payroll_type"
 office_table_drop = "DROP TABLE IF EXISTS office"
 employee_table_drop = "DROP TABLE IF EXISTS employee"
 legislative_entity_table_drop = "DROP TABLE IF EXISTS legislative_entity"
-city_table_drop = "DROP TABLE IF EXISTS"
+city_table_drop = "DROP TABLE IF EXISTS city"
 
 # CREATE TABLES
 
@@ -21,7 +21,7 @@ pay_table_create = ("""
     )
 """)
 pay_period_table_create = ("""
-    CREATE TABLE IS NOT EXISTS pay_period(
+    CREATE TABLE IF NOT EXISTS pay_period(
     pay_period_key SERIAL PRIMARY KEY, 
     pay_period_begin_date timestamp, 
     pay_period_end_date timestamp, 
