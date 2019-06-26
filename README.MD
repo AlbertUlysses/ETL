@@ -1,5 +1,4 @@
-creating a database using the files i have gathered in the payroll csv page
-The Database will be a snowflake schema. 
+next steps:
 
-so far i have set up the database, now I have to start the extracting phase of and transfer phase.
-
+so the pay period table should also have a year since all the years will have the same number of payperiods
+I guess i can create a new column that indicates the year and have the table have two columns for the primary

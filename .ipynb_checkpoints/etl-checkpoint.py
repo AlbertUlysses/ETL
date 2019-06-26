@@ -6,10 +6,10 @@ from sql_queries import *
 
 def process_payroll_file(cur, filepath):
     """Inserts records into the database from the csv files"""
-    df = pd.read_csv(filepath)
+    df = pd.read_csv(filepath, dtype = object)
     
     #inserts payperiod table data
-    payperiod_data = list(df[['PAY_PERIOD', 'PAY_PERIOD_BEGIN_DATE', 'PAY_PERIOD_END_DATE', 'CHECK_DATE']])
+    payperiod_data = df.loc[0,['PAY_PERIOD', 'PAY_PERIOD_BEGIN_DATE', 'PAY_PERIOD_END_DATE', 'CHECK_DATE']]
     cur.execute(pay_period_table_insert, payperiod_data)
 
 def get_files(filepath):

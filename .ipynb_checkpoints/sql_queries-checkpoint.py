@@ -22,10 +22,12 @@ pay_table_create = ("""
 """)
 pay_period_table_create = ("""
     CREATE TABLE IF NOT EXISTS pay_period(
-    pay_period_key PRIMARY KEY, 
+    pay_period_key integer,
+    pay_period_year integer,
     pay_period_begin_date timestamp, 
     pay_period_end_date timestamp, 
-    check_date timestamp
+    check_date timestamp, 
+    PRIMARY KEY(pay_period_key, pay_period_year)
     )
 """)
 payroll_type_table_create = ("""
