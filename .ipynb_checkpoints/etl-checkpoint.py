@@ -16,6 +16,11 @@ def process_payroll_file(cur, filepath):
     #inserts payperiod table data
     payperiod_data = df.loc[0,['PAY_PERIOD', 'YEAR', 'PAY_PERIOD_BEGIN_DATE', 'PAY_PERIOD_END_DATE', 'CHECK_DATE']]
     cur.execute(pay_period_table_insert, payperiod_data)
+    
+    # inserts payroll_type table
+    payroll_type_data = df['PAYROLL_TYPE'].values(0)
+    cur.execute(payroll_type_table_insert, payroll_type_data)
+
 
 def get_files(filepath):
     all_files = []
