@@ -8,10 +8,10 @@ def process_payroll_file(cur, filepath):
     """Inserts records into the database from the csv files"""
     df = pd.read_csv(filepath, dtype = object)
     # converts the datatypes to datetime
-    df['PAY_PERIOD_BEGIN_DATE'] = pd.to_datetime(df['PAY_PERIOD_BEGIN_DATE'])
-    df['PAY_PERIOD_END_DATE'] = pd.to_datetime(df['PAY_PERIOD_END_DATE'])
-    df['CHECK_DATE'] = pd.to_datetime(df['CHECK_DATE'])
-    df['YEAR'] = df['PAY_PERIOD_END_DATE'].dt.year
+    df['PAY_PERIOD_BEGIN_DATE'] = pd.to_datetime(df['PAY_PERIOD_BEGIN_DATE']).astype(object)
+    df['PAY_PERIOD_END_DATE'] = pd.to_datetime(df['PAY_PERIOD_END_DATE']).astype(object)
+    df['CHECK_DATE'] = pd.to_datetime(df['CHECK_DATE']).astype(object)
+    df['YEAR'] = df['PAY_PERIOD_END_DATE'].dt.year.astype(object)
     
     #inserts payperiod table data
     payperiod_data = df.loc[0,['PAY_PERIOD', 'YEAR', 'PAY_PERIOD_BEGIN_DATE', 'PAY_PERIOD_END_DATE', 'CHECK_DATE']]
