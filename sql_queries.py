@@ -23,7 +23,7 @@ pay_table_create = ("""
 pay_period_table_create = ("""
     CREATE TABLE IF NOT EXISTS pay_period(
     pay_period_key integer,
-    pay_period_year integer,
+    pay_period_year timestamp,
     pay_period_begin_date timestamp, 
     pay_period_end_date timestamp, 
     check_date timestamp, 
@@ -73,8 +73,8 @@ pay_table_insert = ("""
 """)
 pay_period_table_insert = ("""
     INSERT INTO pay_period(
-    pay_period_key, pay_period_begin_date, pay_period_end_date, check_date)
-    VALUES (%s, %s, %s, %s)
+    pay_period_key, per_period_year, pay_period_begin_date, pay_period_end_date, check_date)
+    VALUES (%s, %s, %s, %s, %s)
 """)
 payroll_type_table_insert = ("""
     INSERT INTO payroll_type(payroll_type)
