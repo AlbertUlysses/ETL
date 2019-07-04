@@ -33,7 +33,7 @@ pay_period_table_create = ("""
 payroll_type_table_create = ("""
     CREATE TABLE IF NOT EXISTS payroll_type( 
     payroll_type_key SERIAL PRIMARY KEY,
-    payroll_type text
+    payroll_type text unique
     )
 """)
 office_table_create = ("""
@@ -79,6 +79,7 @@ pay_period_table_insert = ("""
 payroll_type_table_insert = ("""
     INSERT INTO payroll_type(payroll_type)
     VALUES (%s)
+    ON CONFLICT DO NOTHING
 """)
 office_table_insert = ("""
     INSERT INTO office(office_name, city_key)
@@ -95,6 +96,7 @@ legislative_entity_insert = ("""
 city_table_insert = ("""
     INSERT INTO city(city)
     VALUES (%s)
+    ON CONFLICT DO NOTHING
 """)
 
 # QUERY LISTS
