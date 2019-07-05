@@ -60,7 +60,7 @@ legislative_entity_table_create = ("""
 city_table_create = ("""
     CREATE TABLE IF NOT EXISTS city(
     city_key SERIAL PRIMARY KEY, 
-    city text
+    city text unique
     )
 """)
 

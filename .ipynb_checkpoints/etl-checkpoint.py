@@ -21,6 +21,11 @@ def process_payroll_file(cur, filepath):
     payroll_type_data = df[['PAYROLL_TYPE']]
     for i, row in payroll_type_data.iterrows():
         cur.execute(payroll_type_table_insert, row)
+        
+    # inserts city table
+    city_data = df[['CITY']]
+    for i, row in city_data.iterrows():
+        cur.execute(city_table_insert, row)
 
 
 def get_files(filepath):
