@@ -18,9 +18,9 @@ def process_payroll_file(cur, filepath):
     cur.execute(pay_period_table_insert, payperiod_data)
     
     # inserts payroll_type table
-    payroll_type_data = df['PAYROLL_TYPE']
-    for val in payroll_type_data:
-        cur.execute(payroll_type_table_insert, val)
+    payroll_type_data = df[['PAYROLL_TYPE']]
+    for i, row in payroll_type_data.iterrows():
+        cur.execute(payroll_type_table_insert, row)
 
 
 def get_files(filepath):
