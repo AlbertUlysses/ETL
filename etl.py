@@ -23,10 +23,14 @@ def process_payroll_file(cur, filepath):
         cur.execute(payroll_type_table_insert, row)
         
     # inserts city table
-    city_data = df[['CITY']]
+    city_data = df[['CITY']].drop_duplicates()
     for i, row in city_data.iterrows():
         cur.execute(city_table_insert, row)
-
+    
+    # inserts legislative entity table
+    legislative_entity_data = df[['LEGISLATIVE_ENTITY']].drop_duplicates()
+    for i, row in legislative_entity_data.iterrows():
+        cur.execute(legislative_entity_insert, row)
 
 def get_files(filepath):
     all_files = []

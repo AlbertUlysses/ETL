@@ -54,7 +54,7 @@ employee_table_create = ("""
 legislative_entity_table_create = ("""
     CREATE TABLE IF NOT EXISTS legislative_entity(
     legislative_entity_key SERIAL PRIMARY KEY, 
-    legislative_entity text
+    legislative_entity text unique
     )
 """)
 city_table_create = ("""
