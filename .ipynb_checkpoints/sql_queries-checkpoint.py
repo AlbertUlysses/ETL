@@ -48,7 +48,7 @@ employee_table_create = ("""
     employee_key SERIAL PRIMARY KEY, 
     employee_name text, 
     employee_title text, 
-    legislative_entity_key integer
+    legislative_entity_key text
     )
 """)
 legislative_entity_table_create = ("""
@@ -70,11 +70,13 @@ pay_table_insert = ("""
     INSERT INTO pay(
     pay, pay_period_key, payroll_type_key, employee_key, office_key)
     VALUES (%s, %s, %s, %s, %s)
+    ON CONFLICT DO NOTHING
 """)
 pay_period_table_insert = ("""
     INSERT INTO pay_period(
     pay_period_key, pay_period_year, pay_period_begin_date, pay_period_end_date, check_date)
     VALUES (%s, %s, %s, %s, %s)
+    ON CONFLICT DO NOTHING
 """)
 payroll_type_table_insert = ("""
     INSERT INTO payroll_type(payroll_type)
@@ -84,14 +86,17 @@ payroll_type_table_insert = ("""
 office_table_insert = ("""
     INSERT INTO office(office_name, city_key)
     VALUES (%s, %s)
+    ON CONFLICT DO NOTHING
 """)
 employee_table_insert = ("""
-    INSERT INTO employee(employee_name, employee_title, legislative_entity_key)
+    INSERT INTO employee (employee_name, employee_title, legislative_entity_key)
     VALUES (%s, %s, %s)
+    ON CONFLICT DO NOTHING
 """)
 legislative_entity_insert = ("""
     INSERT INTO legislative_entity(legislative_entity)
     VALUES (%s)
+    ON CONFLICT DO NOTHING
 """)
 city_table_insert = ("""
     INSERT INTO city(city)
@@ -99,6 +104,18 @@ city_table_insert = ("""
     ON CONFLICT DO NOTHING
 """)
 
+# DELETE DUPLICATES
+employee_table_delete = ("""
+    DELETE 
+    FROM 
+        employee e
+            USING employee e2
+    WHERE
+        e.employee_key < e2.employee_key
+        AND e.employee_name = e2.employee_name
+        AND e.employee_title = e2.employee_title
+        AND e.legislative_entity_key = e2.legislative_entity_key
+""")
 # QUERY LISTS
 
 create_table_queries = [

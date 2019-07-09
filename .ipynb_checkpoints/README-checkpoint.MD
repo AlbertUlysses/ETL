@@ -1,5 +1,8 @@
-creating a database using the files i have gathered in the payroll csv page
-The Database will be a snowflake schema. 
+# ETL with PostgreSQL and Python
+This project creates a database in PostgreSQL using Python. The data in this project is from an open source data website. The code is meant for static data that can be ran manually. 
+## Install
+The virtual environment was created in Anaconda. To recreate this environment you will need to download the yaml file. Then you can create an environment in Anaconda using `conda env create -f environment.yaml`.	 
 
-so far i have set up the database, now I have to start the extracting phase of and transfer phase.
 
+next steps:
+create update statements for all the key names after inserting the data
