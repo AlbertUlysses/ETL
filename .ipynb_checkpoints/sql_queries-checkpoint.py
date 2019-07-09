@@ -40,7 +40,7 @@ office_table_create = ("""
     CREATE TABLE IF NOT EXISTS office(
     office_key SERIAL PRIMARY KEY, 
     office_name text, 
-    city_key integer
+    city_key text
     )
 """)
 employee_table_create = ("""
@@ -116,6 +116,16 @@ employee_table_delete = ("""
         AND e.employee_title = e2.employee_title
         AND e.legislative_entity_key = e2.legislative_entity_key
 """)
+office_table_delete = ("""
+    DELETE
+    FROM office o
+            USING office o2
+    WHERE
+        o.office_key < o2.office_key
+        AND o.office_name = o2.office_name
+        AND o.city_key = o2.city_key
+""")
+
 # QUERY LISTS
 
 create_table_queries = [

@@ -39,7 +39,14 @@ def process_payroll_file(cur, filepath):
 
     # delete duplicate entries from employee table
     cur.execute(employee_table_delete)
-
+    
+    # inserts office table data
+    office_data = df[['OFFICE', 'CITY']].drop_duplicates()
+    for i, row in office_data.iterrows():
+        cur.execute(office_table_insert, row)
+    
+    # delete duplicates entries from office table
+    cur.execute(office_table_delete)
 
 def get_files(filepath):
     all_files = []
