@@ -40,6 +40,9 @@ def process_payroll_file(cur, filepath):
     # delete duplicate entries from employee table
     cur.execute(employee_table_delete)
     
+    # updates legislative entity key column in employee table
+    cur.execute(employee_table_update)
+    
     # inserts office table data
     office_data = df[['OFFICE', 'CITY']].drop_duplicates()
     for i, row in office_data.iterrows():
@@ -70,12 +73,20 @@ def process_data(cur, conn, filepath, func):
           func(cur, datafile)
           conn.commit()
           print('{}/{} files processed'.format(i, num_files))
-    
+
+def drops_columns(cur, conn):
+    """Drops all temp columns in the DB"""
+    for query in drop_column_queries:
+        cur.execute(query)
+        conn.commit()
+
+
 def main():
     conn = pg2.connect(database = 'governmentpayroll', user = 'postgres', password = 'poop1234')
     cur = conn.cursor()
     
     process_data(cur, conn, filepath ='payroll', func = process_payroll_file)
+    drops_columns(cur, conn)
     conn.close()
 
 if __name__ == "__main__":
