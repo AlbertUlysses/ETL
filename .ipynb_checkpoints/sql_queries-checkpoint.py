@@ -40,7 +40,8 @@ office_table_create = ("""
     CREATE TABLE IF NOT EXISTS office(
     office_key SERIAL PRIMARY KEY, 
     office_name text, 
-    city_key text
+    city text,
+    city_key integer
     )
 """)
 employee_table_create = ("""
@@ -85,7 +86,7 @@ payroll_type_table_insert = ("""
     ON CONFLICT DO NOTHING
 """)
 office_table_insert = ("""
-    INSERT INTO office(office_name, city_key)
+    INSERT INTO office(office_name, city)
     VALUES (%s, %s)
     ON CONFLICT DO NOTHING
 """)
@@ -134,11 +135,22 @@ employee_table_update = ("""
     FROM legislative_entity
     WHERE employee.legislative_entity = legislative_entity.legislative_entity);
 """)
+office_table_update = ("""
+    UPDATE office
+    SET city_key = (
+    SELECT city_key
+    FROM city
+    WHERE office.city = city.city)
+""")
 
-# DELETE COLUMNS
-employee_table_delete_column =("""
+# DROP COLUMNS
+employee_table_drop_column =("""
     ALTER TABLE employee
     DROP COLUMN "legislative_entity"
+""")
+office_table_drop_column = ("""
+    ALTER TABLE office
+    DROP COLUMN "city"
 """)
 
 # QUERY LISTS
@@ -149,5 +161,5 @@ drop_table_queries =[
     pay_table_drop, pay_period_table_drop, payroll_type_table_drop, office_table_drop, employee_table_drop, legislative_entity_table_drop, city_table_drop]
 
 drop_column_queries = [
-    employee_table_delete_column
+    employee_table_drop_column, office_table_drop_column
 ]

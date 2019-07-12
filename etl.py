@@ -51,6 +51,9 @@ def process_payroll_file(cur, filepath):
     # delete duplicates entries from office table
     cur.execute(office_table_delete)
 
+    # updates city_key column in office table
+    cur.execute(office_table_update)
+    
 def get_files(filepath):
     all_files = []
     for root, dirs, files in os.walk(filepath):
