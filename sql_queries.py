@@ -116,7 +116,7 @@ employee_table_delete = ("""
         e.employee_key < e2.employee_key
         AND e.employee_name = e2.employee_name
         AND e.employee_title = e2.employee_title
-        AND e.legislative_entity_key = e2.legislative_entity_key
+        AND e.legislative_entity = e2.legislative_entity
 """)
 office_table_delete = ("""
     DELETE
@@ -125,7 +125,7 @@ office_table_delete = ("""
     WHERE
         o.office_key < o2.office_key
         AND o.office_name = o2.office_name
-        AND o.city_key = o2.city_key
+        AND o.city = o2.city
 """)
 # UPDATE TABLES
 
@@ -157,9 +157,15 @@ office_table_drop_column = ("""
 
 create_table_queries = [
     pay_table_create, pay_period_table_create, payroll_type_table_create, office_table_create, employee_table_create, legislative_entity_table_create, city_table_create]
-drop_table_queries =[
+drop_table_queries = [
     pay_table_drop, pay_period_table_drop, payroll_type_table_drop, office_table_drop, employee_table_drop, legislative_entity_table_drop, city_table_drop]
-
+delete_duplicate_rows_queries = [
+    employee_table_delete, office_table_delete
+]
+update_columns_queries =[
+    employee_table_update, office_table_update
+]
 drop_column_queries = [
     employee_table_drop_column, office_table_drop_column
 ]
+

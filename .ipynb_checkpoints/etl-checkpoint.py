@@ -6,7 +6,9 @@ from sql_queries import *
 
 def process_payroll_file(cur, filepath):
     """Inserts records into the database from the csv files"""
+    
     df = pd.read_csv(filepath, dtype = object)
+    
     # converts the datatypes to datetime
     df['PAY_PERIOD_BEGIN_DATE'] = pd.to_datetime(df['PAY_PERIOD_BEGIN_DATE']).astype(object)
     df['PAY_PERIOD_END_DATE'] = pd.to_datetime(df['PAY_PERIOD_END_DATE']).astype(object)
@@ -36,23 +38,12 @@ def process_payroll_file(cur, filepath):
     employee_data = df[['EMPLOYEE_NAME', 'EMPLOYEE_TITLE', 'LEGISLATIVE_ENTITY']].drop_duplicates()
     for i, row in employee_data.iterrows():
         cur.execute(employee_table_insert, row)
-
-    # delete duplicate entries from employee table
-    cur.execute(employee_table_delete)
-    
-    # updates legislative entity key column in employee table
-    cur.execute(employee_table_update)
     
     # inserts office table data
     office_data = df[['OFFICE', 'CITY']].drop_duplicates()
     for i, row in office_data.iterrows():
         cur.execute(office_table_insert, row)
     
-    # delete duplicates entries from office table
-    cur.execute(office_table_delete)
-
-    # updates city_key column in office table
-    cur.execute(office_table_update)
     
 def get_files(filepath):
     all_files = []
@@ -77,6 +68,18 @@ def process_data(cur, conn, filepath, func):
           conn.commit()
           print('{}/{} files processed'.format(i, num_files))
 
+def update_columns(cur, conn):
+    """Updates key columns for the necessary tables"""
+    for query in update_columns_queries:
+        cur.execute(query)
+        conn.commit()
+            
+def delete_duplicates(cur, conn):
+    """Deletes all duplicate rows"""
+    for query in delete_duplicate_rows_queries:
+        cur.execute(query)
+        conn.commit()
+            
 def drops_columns(cur, conn):
     """Drops all temp columns in the DB"""
     for query in drop_column_queries:
@@ -84,11 +87,14 @@ def drops_columns(cur, conn):
         conn.commit()
 
 
+
 def main():
     conn = pg2.connect(database = 'governmentpayroll', user = 'postgres', password = 'poop1234')
     cur = conn.cursor()
     
     process_data(cur, conn, filepath ='payroll', func = process_payroll_file)
+    update_columns(cur, conn)
+    delete_duplicates(cur, conn)
     drops_columns(cur, conn)
     conn.close()
 
