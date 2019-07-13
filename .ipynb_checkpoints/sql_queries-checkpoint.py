@@ -12,11 +12,16 @@ city_table_drop = "DROP TABLE IF EXISTS city"
 
 pay_table_create = ("""
     CREATE TABLE IF NOT EXISTS pay( 
-    pay_id SERIAL PRIMARY KEY, 
-    pay float NOT NULL, 
+    pay_key SERIAL PRIMARY KEY, 
+    pay_rate float NOT NULL,
+    pay_period integer,
+    pay_year integer,
     pay_period_key integer, 
+    payroll_type text,
     payroll_type_key integer, 
+    employee_name text,
     employee_key integer, 
+    office_name text, 
     office_key integer
     )
 """)
@@ -24,7 +29,7 @@ pay_period_table_create = ("""
     CREATE TABLE IF NOT EXISTS pay_period(
     pay_period_key SERIAL PRIMARY KEY,
     pay_period integer,
-    pay_period_year integer,
+    pay_year integer,
     pay_period_begin_date timestamp, 
     pay_period_end_date timestamp, 
     check_date timestamp
@@ -70,13 +75,13 @@ city_table_create = ("""
 
 pay_table_insert = ("""
     INSERT INTO pay(
-    pay, pay_period_key, payroll_type_key, employee_key, office_key)
-    VALUES (%s, %s, %s, %s, %s)
+    pay_rate, pay_period, pay_year, payroll_type, employee_name, office_name)
+    VALUES ( %s, %s, %s, %s, %s, %s)
     ON CONFLICT DO NOTHING
 """)
 pay_period_table_insert = ("""
     INSERT INTO pay_period(
-    pay_period, pay_period_year, pay_period_begin_date, pay_period_end_date, check_date)
+    pay_period, pay_year, pay_period_begin_date, pay_period_end_date, check_date)
     VALUES (%s, %s, %s, %s, %s)
     ON CONFLICT DO NOTHING
 """)
@@ -142,7 +147,21 @@ office_table_update = ("""
     FROM city
     WHERE office.city = city.city)
 """)
-
+pay_table_update = ("""
+    UPDATE pay
+    SET employee_key = (
+    SELECT employee_key
+    FROM employee
+    WHERE pay.employee_name = employee.employee_name);
+    
+    
+""")
+""" UPDATE pay
+    SET office_key = (
+    SELECT office_key
+    FROM office
+    WHERE pay.office_name = office.office_name);
+"""
 # DROP COLUMNS
 employee_table_drop_column =("""
     ALTER TABLE employee
@@ -156,14 +175,16 @@ office_table_drop_column = ("""
 # QUERY LISTS
 
 create_table_queries = [
-    pay_table_create, pay_period_table_create, payroll_type_table_create, office_table_create, employee_table_create, legislative_entity_table_create, city_table_create]
+    pay_table_create, pay_period_table_create, payroll_type_table_create, office_table_create, employee_table_create, legislative_entity_table_create, city_table_create
+]
 drop_table_queries = [
-    pay_table_drop, pay_period_table_drop, payroll_type_table_drop, office_table_drop, employee_table_drop, legislative_entity_table_drop, city_table_drop]
+    pay_table_drop, pay_period_table_drop, payroll_type_table_drop, office_table_drop, employee_table_drop, legislative_entity_table_drop, city_table_drop
+]
 delete_duplicate_rows_queries = [
     employee_table_delete, office_table_delete
 ]
 update_columns_queries =[
-    employee_table_update, office_table_update
+    employee_table_update, office_table_update, pay_table_update
 ]
 drop_column_queries = [
     employee_table_drop_column, office_table_drop_column

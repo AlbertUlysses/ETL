@@ -44,6 +44,10 @@ def process_payroll_file(cur, filepath):
     for i, row in office_data.iterrows():
         cur.execute(office_table_insert, row)
     
+    # inserts pay table data
+    pay_data = df[['BIWEEKLY/HOURLY_RATE', 'PAY_PERIOD', 'YEAR', 'PAYROLL_TYPE', 'EMPLOYEE_NAME', 'OFFICE']].drop_duplicates()
+    for i, row in pay_data.iterrows():
+        cur.execute(pay_table_insert, row)
     
 def get_files(filepath):
     all_files = []
@@ -85,8 +89,6 @@ def drops_columns(cur, conn):
     for query in drop_column_queries:
         cur.execute(query)
         conn.commit()
-
-
 
 def main():
     conn = pg2.connect(database = 'governmentpayroll', user = 'postgres', password = 'poop1234')
