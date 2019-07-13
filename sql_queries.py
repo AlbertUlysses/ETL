@@ -20,7 +20,8 @@ pay_table_create = ("""
     payroll_type text,
     payroll_type_key integer, 
     employee_name text,
-    employee_key integer, 
+    employee_key integer,
+    city text, 
     office_name text, 
     office_key integer
     )
@@ -75,9 +76,8 @@ city_table_create = ("""
 
 pay_table_insert = ("""
     INSERT INTO pay(
-    pay_rate, pay_period, pay_year, payroll_type, employee_name, office_name)
-    VALUES ( %s, %s, %s, %s, %s, %s)
-    ON CONFLICT DO NOTHING
+    pay_rate, pay_period, pay_year, payroll_type, employee_name, city, office_name)
+    VALUES ( %s, %s, %s, %s, %s, %s, %s)
 """)
 pay_period_table_insert = ("""
     INSERT INTO pay_period(
@@ -150,19 +150,13 @@ office_table_update = ("""
 """)
 pay_table_update = ("""
     UPDATE pay
-    SET employee_key = (
-    SELECT employee_key
-    FROM employee
-    WHERE pay.employee_name = employee.employee_name);
-    
-    
+    SET pay_period_key = (
+    SELECT pay_period_key
+    FROM pay_period
+    WHERE pay.pay_year = pay_period.pay_year
+    AND pay.pay_period = pay_period.pay_period)
 """)
-""" UPDATE pay
-    SET office_key = (
-    SELECT office_key
-    FROM office
-    WHERE pay.office_name = office.office_name);
-"""
+
 # DROP COLUMNS
 employee_table_drop_column =("""
     ALTER TABLE employee
