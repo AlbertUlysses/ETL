@@ -18,12 +18,14 @@ pay_table_create = ("""
     pay_year integer,
     pay_period_key integer, 
     payroll_type text,
-    payroll_type_key integer, 
+    payroll_type_key integer,
+    legislative_entity text,
     employee_name text,
+    employee_title text,
     employee_key integer,
     city text, 
     office_name text, 
-    office_key integer
+    office_key integer,
     )
 """)
 pay_period_table_create = ("""
@@ -76,8 +78,8 @@ city_table_create = ("""
 
 pay_table_insert = ("""
     INSERT INTO pay(
-    pay_rate, pay_period, pay_year, payroll_type, employee_name, city, office_name)
-    VALUES ( %s, %s, %s, %s, %s, %s, %s)
+    pay_rate, pay_period, pay_year, payroll_type, employee_name, city, office_name, legislative_entity, employee_title)
+    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
 """)
 pay_period_table_insert = ("""
     INSERT INTO pay_period(
@@ -150,11 +152,23 @@ office_table_update = ("""
 """)
 pay_table_update = ("""
     UPDATE pay
-    SET pay_period_key = (
+    SET pay_period_key =(
     SELECT pay_period_key
     FROM pay_period
     WHERE pay.pay_year = pay_period.pay_year
-    AND pay.pay_period = pay_period.pay_period)
+    AND pay.pay_period = pay_period.pay_period);
+    UPDATE pay
+    SET payroll_type_key =(
+    SELECT payroll_type_key
+    FROM payroll_type
+    WHERE pay.payroll_type = payroll_type.payroll_type);
+    UPDATE pay
+    SET employee_key =(
+    SELECT employee_key
+    FROM employee
+    WHERE pay.employee_name = employee.employee_name
+    AND pay.legislative_entity = employee.legislative_entity
+    AND pay.employee_title = employee.employee_title);
 """)
 
 # DROP COLUMNS

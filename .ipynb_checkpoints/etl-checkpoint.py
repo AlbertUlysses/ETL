@@ -45,7 +45,7 @@ def process_payroll_file(cur, filepath):
         cur.execute(office_table_insert, row)
     
     # inserts pay table data
-    pay_data = df[['BIWEEKLY/HOURLY_RATE', 'PAY_PERIOD', 'YEAR', 'PAYROLL_TYPE', 'EMPLOYEE_NAME', 'CITY', 'OFFICE']].drop_duplicates()
+    pay_data = df[['BIWEEKLY/HOURLY_RATE', 'PAY_PERIOD', 'YEAR', 'PAYROLL_TYPE', 'EMPLOYEE_NAME', 'CITY', 'OFFICE', 'LEGISLATIVE_ENTITY']].drop_duplicates()
     for i, row in pay_data.iterrows():
         cur.execute(pay_table_insert, row)
     
@@ -95,8 +95,8 @@ def main():
     cur = conn.cursor()
     
     process_data(cur, conn, filepath ='payroll', func = process_payroll_file)
-    update_columns(cur, conn)
     delete_duplicates(cur, conn)
+    update_columns(cur, conn)
     drops_columns(cur, conn)
     conn.close()
 
