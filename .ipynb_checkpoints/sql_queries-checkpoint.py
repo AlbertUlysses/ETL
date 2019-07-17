@@ -25,7 +25,7 @@ pay_table_create = ("""
     employee_key integer,
     city text, 
     office_name text, 
-    office_key integer,
+    office_key integer
     )
 """)
 pay_period_table_create = ("""
@@ -152,23 +152,29 @@ office_table_update = ("""
 """)
 pay_table_update = ("""
     UPDATE pay
-    SET pay_period_key =(
+    SET pay_period_key = (
     SELECT pay_period_key
     FROM pay_period
     WHERE pay.pay_year = pay_period.pay_year
     AND pay.pay_period = pay_period.pay_period);
     UPDATE pay
-    SET payroll_type_key =(
+    SET payroll_type_key = (
     SELECT payroll_type_key
     FROM payroll_type
     WHERE pay.payroll_type = payroll_type.payroll_type);
     UPDATE pay
-    SET employee_key =(
+    SET employee_key = (
     SELECT employee_key
     FROM employee
     WHERE pay.employee_name = employee.employee_name
     AND pay.legislative_entity = employee.legislative_entity
     AND pay.employee_title = employee.employee_title);
+    UPDATE pay
+    SET office_key = (
+    SELECT office_key
+    FROM office
+    WHERE pay.office_name = office.office_name
+    AND pay.city = office.city);
 """)
 
 # DROP COLUMNS
@@ -179,6 +185,17 @@ employee_table_drop_column =("""
 office_table_drop_column = ("""
     ALTER TABLE office
     DROP COLUMN "city"
+""")
+pay_table_drop_column = ("""
+    ALTER TABLE pay
+    DROP COLUMN pay_period, 
+    DROP COLUMN pay_year, 
+    DROP COLUMN payroll_type, 
+    DROP COLUMN legislative_entity, 
+    DROP COLUMN employee_name, 
+    DROP COLUMN employee_title, 
+    DROP COLUMN city, 
+    DROP COLUMN office_name
 """)
 
 # QUERY LISTS
@@ -196,6 +213,6 @@ update_columns_queries =[
     employee_table_update, office_table_update, pay_table_update
 ]
 drop_column_queries = [
-    employee_table_drop_column, office_table_drop_column
+    employee_table_drop_column, office_table_drop_column, pay_table_drop_column
 ]
 
