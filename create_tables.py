@@ -3,13 +3,13 @@ from sql_queries import create_table_queries, drop_table_queries
 
 
 def create_database():
-    conn = pg2.connect(database = 'postgres', user = 'postgres', password = 'poop1234')
+    conn = pg2.connect(database = '### Insert your local database, often called postgres', user = '### Insert user here', password = '### Insert password here')
     conn.set_session(autocommit = True)
     cur = conn.cursor()
     cur.execute("DROP DATABASE IF EXISTS governmentpayroll")
     cur.execute("CREATE DATABASE governmentpayroll WITH ENCODING 'utf8' TEMPLATE template0")
     conn.close()
-    conn = pg2.connect(database = 'governmentpayroll', user = 'postgres', password = 'poop1234')
+    conn = pg2.connect(database = 'governmentpayroll', user = '### Insert user here', password = '### Insert password here')
     cur = conn.cursor()
 
     return cur, conn

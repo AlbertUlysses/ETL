@@ -91,7 +91,7 @@ def drops_columns(cur, conn):
         conn.commit()
 
 def main():
-    conn = pg2.connect(database = 'governmentpayroll', user = 'postgres', password = 'poop1234')
+    conn = pg2.connect(database = 'governmentpayroll', user = '### Insert user name here', password = '### Insert password here')
     cur = conn.cursor()
     
     process_data(cur, conn, filepath ='payroll', func = process_payroll_file)
