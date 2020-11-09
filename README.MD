@@ -1,6 +1,11 @@
 # EPayroll Database ETL
-This project creates a database in PostgreSQL using Python. The data in this project is from an open source data website: https://www.data.gov/ . The code is meant for static data in a single dump into a Database. 
+The EParyroll Database ETL project is an Extract Transform Load job for the payroll data from data.gov.com. The project contains a data model, Python Scripts, and requirement files.
+
 ## Install
-The virtual environment was created in Anaconda. To recreate this environment you will need to download the yaml file. Then run `conda env create -f environment.yaml` in the command line.	 
-You will need to enter unique information in several places in the create_tables.py and etl.py files. 
-You can find them using the following marks `### Insert ...` 
+There are two different ways you can prepare your environment to run the program. To recreate the conda environement, you can run `conda env create -f environment.yaml .` The second method is using pip and the requirement.txt file `pip install -r requirements.txt .`
+There are several places in the create_tables.py and etl.py files that you will need to fill out. You can find them using the following marks `### Insert ...`
+## What's next:
+The next steps for the project will be to create some test and refactor where necessary. 
+
+### Data source:
+https://www.data.gov/ 
