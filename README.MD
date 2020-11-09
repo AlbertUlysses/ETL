@@ -1,5 +1,5 @@
 # EPayroll Database ETL
-The EParyroll Database ETL project is an Extract Transform Load job for the payroll data from data.gov.com. The project contains a data model, Python Scripts, and requirement files.
+The EParyroll Database ETL project is an Extract Transform Load job for the payroll data from data.gov. The project contains a data model, Python Scripts, and requirement files.
 
 ## Install
 There are two different ways you can prepare your environment to run the program. To recreate the conda environement, you can run `conda env create -f environment.yaml .` The second method is using pip and the requirement.txt file `pip install -r requirements.txt .`
